@@ -30,20 +30,23 @@ function start() {
         .prompt({
             name: "viewOrAdd",
             type: "list",
-            message: "Would you like to view information or add new infomation?",
-            choices: ["View", "Add", "Exit"]
+            message: "Would you like to view, update, or add new information?",
+            choices: ["View", "Update", "Add", "Exit"]
         })
         .then(function (answer) {
-            // based on their answer, either call the bid or the post functions
+            // based on their answer, either call the bid // update // or post functions
             if (answer.viewOrAdd === "View") {
                 queryAllItems();
+            } else if (answer.viewOrAdd === "Update") {
+                updateItem();
             } else if (answer.viewOrAdd === "Add") {
                 addItem();
             } else {
                 connection.end();
             }
-        });
-}
+        })
+};
+
 
 function queryAllItems() {
     console.log("...Selecting all items in table to READ...");
