@@ -1,9 +1,15 @@
+/////////////////////////////////////////////////////
+// DEPENDENCIES
+//////////////////////////////////////////////////////
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const consoleTable = require('console.table');
 require("dotenv").config();
 
-// create the connection information for the sql database
+/////////////////////////////////////////////////////
+// CONNECTION INFO FOR THE SQL DATABASE
+// Uses dotenv password dependency
+//////////////////////////////////////////////////////
 const connection = mysql.createConnection({
     host: "localhost",
 
@@ -15,14 +21,23 @@ const connection = mysql.createConnection({
     database: "staff_db"
 });
 
-// connect to the mysql server and sql database
+
+/////////////////////////////////////////////////////
+// CONNECT TO THE MYSQL SERVER + SQL DATABASE
+//////////////////////////////////////////////////////
 connection.connect(function (err) {
     if (err) throw err;
+    /////////////////////////////////////////////////////
     // run the startQuestions function after the connection is made to prompt the user
+    //////////////////////////////////////////////////////
     start();
 });
 
-// function which prompts the user for what action they should take
+
+/////////////////////////////////////////////////////
+// MAIN MENU PROMPT FUNCTION 
+// View / Update / Add / Exit (restart start() function)
+//////////////////////////////////////////////////////
 function start() {
     inquirer
         .prompt({
@@ -32,7 +47,10 @@ function start() {
             choices: ["View", "Update", "Add", "Exit"]
         })
         .then(function (answer) {
-            // based on their answer, either call the bid // update // or post functions
+            /////////////////////////////////////////////////////
+            // Based on answer to start() prompt name "startQ"
+            // Route user to appropriate prompt function
+            //////////////////////////////////////////////////////
             if (answer.startQ === "View") {
                 viewRootMenu();
             } else if (answer.startQ === "Update") {
@@ -45,6 +63,12 @@ function start() {
         })
 };
 
+/////////////////////////////////////////////////////
+// VIEW 'ROOT' MENU
+// Uses viewRootMenu() prompt name "viewRoot" --
+// Prompt user to either:
+// View All Data / View Depts / View Roles / View Employees
+//////////////////////////////////////////////////////
 function viewRootMenu() {
     inquirer.prompt({
         name: "viewRoot",
@@ -52,6 +76,10 @@ function viewRootMenu() {
         message: "What data would you like to view?",
         choices: ["View All Data Types", "View Departments", "View Employee Roles", "View Employee Directory", "Back to Main Menu"]
     }).then(function (vrAnswer) {
+        /////////////////////////////////////////////////////
+        // Based on answer to viewRootMenu() prompt name "viewRoot"
+        // Route user to appropriate view SELECT function
+        //////////////////////////////////////////////////////
         if (vrAnswer.viewRoot === "View All Data Types") {
             console.log("viewRoot answer = View All Data");
             viewAllData();
@@ -70,6 +98,11 @@ function viewRootMenu() {
     })
 }
 
+/////////////////////////////////////////////////////
+// Called from viewRootMenu() function
+// viewAllData() function displays data in: dept, role, emp
+// by separately querying each table 
+//////////////////////////////////////////////////////
 function viewAllData() {
     connection.query("SELECT * FROM department", function (err, res) {
         if (err) throw (err);
@@ -92,36 +125,54 @@ function viewAllData() {
     start();
 }
 
+/////////////////////////////////////////////////////
+// Called from within viewRootMenu() function
+// viewDepts() function uses SELECT to display department table
+//////////////////////////////////////////////////////
 function viewDepts() {
     connection.query("SELECT * FROM department", function (err, res) {
         if (err) throw (err);
-        console.log("\n");
+        console.log("\nALL DEPARTMENT DATA:\n");
         console.table(res);
         console.log("\n");
     });
     start();
 }
 
+/////////////////////////////////////////////////////
+// Called from within viewRootMenu() function
+// viewRoles() function uses SELECT to display role table
+//////////////////////////////////////////////////////
 function viewRoles() {
     connection.query("SELECT * FROM role", function (err, res) {
         if (err) throw (err);
-        console.log("\n");
+        console.log("\nALL ROLE DATA:\n");
         console.table(res);
         console.log("\n");
     });
     start();
 }
 
+/////////////////////////////////////////////////////
+// Called from within viewRootMenu() function
+// viewDir() function uses SELECT to display employee table
+//////////////////////////////////////////////////////
 function viewDir() {
     connection.query("SELECT * FROM employee", function (err, res) {
         if (err) throw (err);
-        console.log("\n");
+        console.log("\nALL EMPLOYEE DATA:\n");
         console.table(res);
         console.log("\n");
     });
     start();
 }
 
+/////////////////////////////////////////////////////
+// ADD DATA 'ROOT' MENU
+// Called from within start() function, prompt name "StartQ"
+// User chooses to add new:
+// Dept / Role / Emp // Or back to main menu aka start()
+//////////////////////////////////////////////////////
 function addData() {
     inquirer
         .prompt({
@@ -142,13 +193,20 @@ function addData() {
         });
 }
 
+/////////////////////////////////////////////////////
+// ADD NEW DEPT FUNCTION
+// Called from within addData() function, prompt name "addRoot"
+// User inputs name of new dept via prompt name "addDept"
+//////////////////////////////////////////////////////
 function addDept() {
     inquirer
         .prompt({
             name: "addDept",
             type: "input",
             message: "What is the name of the department you would like to add?"
+            /////////////////////// .then async
         }).then(async function (adAnswer) {
+            /////////////////////// INSERT INTO role table
             connection.query("INSERT INTO department SET ?", {
                     name: adAnswer.addDept
                 },
@@ -157,30 +215,41 @@ function addDept() {
                 });
             await start();
         });
+    //in the future, I'd like to add another prompt to ask to view all departments or return to main menu
 }
 
+/////////////////////////////////////////////////////
+// ADD NEW ROLE FUNCTION
+// Called from within addData() function, prompt name "addRoot"
+// User inputs:
+// name of new role via prompt name "addRoleTitle"
+// role salary via prompt name "addRoleSalary"
+// role's dept ID via prompt name "addRoleDeptId"
+//////////////////////////////////////////////////////
 function addRole() {
     // inquirer
     inquirer
         .prompt([{
+                /////////////////////// Role Title
                 name: "addRoleTitle",
                 type: "input",
                 message: "What is the title of the role you would like to add?"
             },
-            {
+            { /////////////////////// Role Salary
                 name: "addRoleSalary",
                 type: "input",
-                message: "What is the salary of the new role you added??"
+                message: "What is the salary of this new role?"
             },
-            {
+            { /////////////////////// Role Dept ID
                 name: "addRoleDeptId",
                 type: "list",
                 message: "What is the department id of the new role you added? // 1 - Operations / 2 - Engineering / 3 - Customer Support / 4 - Implementation / 5 - Sales",
                 choices: ["1", "2", "3", "4", "5"]
             }
+            /////////////////////// .then async
         ]).then(async function (arAnswer) {
+            /////////////////////// INSERT INTO role table
             connection.query("INSERT INTO role SET ?", {
-                    /////////////////////
                     title: arAnswer.addRoleTitle,
                     salary: arAnswer.addRoleSalary,
                     department_id: arAnswer.addRoleDeptId
@@ -189,43 +258,50 @@ function addRole() {
                 function (err) {
                     if (err) throw (err);
                 });
+            //in the future, I'd like to add another prompt to ask to view all roles (to see new role in list) or return to main menu
             await start();
         });
 
 }
 
-
+/////////////////////////////////////////////////////
+// ADD NEW EMPLOYEE -to employee directory- FUNCTION
+// Called from within addData() function, prompt name "addRoot"
+// User inputs:
+// name of new role via prompt name "addRoleTitle"
+// role salary via prompt name "addRoleSalary"
+// role's dept ID via prompt name "addRoleDeptId"
+//////////////////////////////////////////////////////
 function addDir() {
     //inquirer
     inquirer
         .prompt([{
-                // first name
+                /////////////////////// first name
                 name: "addDirFirst",
                 type: "input",
                 message: "You've selected to add a new employee. What is the FIRST name of the employee you would like to add?"
             },
-            { // last name 
+            { /////////////////////// last name
                 name: "addDirLast",
                 type: "input",
                 message: "What is the LAST name of the employee you would like to add?"
             },
-            { // role_id
+            { /////////////////////// role_id
                 name: "addDirRoleId",
                 type: "list",
                 message: "What is the role id of the new role you added? /// 1 - CEO // 2 - VP of Dev // 3 - VP of Marketing // 4 - Engineer // 5 - Junior Engineer // 6 - Implementation Manager // 7 - Marketing Analyst // 8 - Project Manager ///",
                 choices: ["1", "2", "3", "4", "5", "6", "7", "8"]
             },
-            { // manager_id
+            { /////////////////////// manager_id
                 name: "addDirManagerId",
                 type: "list",
                 message: "What is the manager id of the new role you added? /// 1 - CEO Lucy Martin // 2 - VP of Dev Nancy King // 3 - VP of Marketing Sean Samuels // 4 - Implementation Manager Parker Bowles ///",
                 choices: ["1", "2", "3", "4"]
             }
-            //.then async
+            /////////////////////// .then async
         ]).then(async function (adAnswer) {
-            // query INSERT INTO employee SET ?
+            /////////////////////// INSERT INTO role table
             connection.query("INSERT INTO employee SET ?", {
-                    /////////////////////
                     first_name: adAnswer.addDirFirst,
                     last_name: adAnswer.addDirLast,
                     role_id: adAnswer.addDirRoleId,
@@ -240,43 +316,31 @@ function addDir() {
 
 }
 
+/////////////////////////////////////////////////////
+// UPDATE DATA FUNCTION
+// only employees can be modified 
+//////////////////////////////////////////////////////
 function updateData() {
-    // inquirer 
-    // we can only update employees
-    // soecififcally their role and manager id
-    // how to indentify employees? 
-    // could do name, but would have to be an exact match
-    // could do employee id. Would hey know it? probably not
-    // i think employee id is best
 
-    // prompt for update role or manager
-
-    // if role, 
-    // prompt for new role name (updatedRole_)
-    // prompt for emp id (name empId_)
-    // .then async function (urAnswer)
-    // query UPDATE employee SET ? WHERE > 
-    // role_id: urAnswer.updatedRole_
-    // id: urAnswer
-
-    // if manager, 
-    // prompt for new role name (updatedManager_)
-    // prompt for emp id (name empId_)
-    // .then async function (umAnswer)
-    // query UPDATE employee SET ? WHERE > 
-    // manager_id: umAnswer.updatedManager_
-    // id: urAnswer
 }
+// we can only update employees
+// specififcally their role and manager id
+// how to indentify employees? 
+// could do name, but would have to be an exact match
+// could do employee id. Would hey know it? probably not
+// i think employee id is best
+
+// prompt for update role or manager
 
 
 
-// // function queryAllItems() {
-// //     console.log("...Selecting all items in table to READ...");
-// //     connection.query("SELECT * FROM employees", function (err, res) {
-// //         if (err) throw err;
-// //         for (var i = 0; i < res.length; i++) {
-// //             console.log(res[i].id + " | " + res[i].first_name + " | " + res[i].role_id + " | " + res[i].manager_id);
-// //         }
-// //         console.log("-----------------------------------");
-// //     });
-// // }
+// role_id: urAnswer.updatedRole_
+// id: urAnswer
+
+// if manager, 
+// prompt for new role name (updatedManager_)
+// prompt for emp id (name empId_)
+// .then async function (umAnswer)
+// query UPDATE employee SET ? WHERE > 
+// manager_id: umAnswer.updatedManager_
+// id: urAnswer
