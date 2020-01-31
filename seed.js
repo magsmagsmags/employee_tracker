@@ -144,6 +144,55 @@ function addDept() {
         });
 }
 
+function addRole() {
+    // inquirer
+    //role 
+    // salary
+    // affilited dept id
+    //.then async
+    // query INSERT INTO role SET ?
+    // await start
+}
+
+function addDir() {
+    //inquirer
+    // first name
+    // last name 
+    // role_id
+    // manager_id
+    //.then async
+    // query INSERT INTO employee SET ?
+    // await start
+
+}
+
+function updateData() {
+    // inquirer 
+    // we can only update employees
+    // soecififcally their role and manager id
+    // how to indentify employees? 
+    // could do name, but would have to be an exact match
+    // could do employee id. Would hey know it? probably not
+    // i think employee id is best
+
+    // prompt for update role or manager
+    // if role, 
+    // prompt for new role name (updatedRole_)
+    // prompt for emp id (name empId_)
+    // .then async function (urAnswer)
+    // query UPDATE employee SET ? WHERE > 
+    // role_id: urAnswer.updatedRole_
+    // id: urAnswer
+    // if manager, 
+    // prompt for new role name (updatedManager_)
+    // prompt for emp id (name empId_)
+    // .then async function (umAnswer)
+    // query UPDATE employee SET ? WHERE > 
+    // manager_id: umAnswer.updatedManager_
+    // id: urAnswer
+}
+
+
 
 // // function queryAllItems() {
 // //     console.log("...Selecting all items in table to READ...");
