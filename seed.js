@@ -203,7 +203,7 @@ function addDept() {
         .prompt({
             name: "addDept",
             type: "input",
-            message: "What is the name of the department you would like to add?"
+            message: "ADD A NEW DEPARTMENT. You've selected to add a new department to the company. What is the name of the department you would like to add?"
             /////////////////////// .then async
         }).then(async function (adAnswer) {
             /////////////////////// INSERT INTO role table
@@ -233,7 +233,7 @@ function addRole() {
                 /////////////////////// Role Title
                 name: "addRoleTitle",
                 type: "input",
-                message: "What is the title of the role you would like to add?"
+                message: "ADD A NEW ROLE: You've selected to add a new role. What is the title of the role you would like to add?"
             },
             { /////////////////////// Role Salary
                 name: "addRoleSalary",
@@ -279,7 +279,7 @@ function addDir() {
                 /////////////////////// first name
                 name: "addDirFirst",
                 type: "input",
-                message: "You've selected to add a new employee. What is the FIRST name of the employee you would like to add?"
+                message: "ADD A NEW EMPLOYEE: You've selected to add a new employee. What is the FIRST name of the employee you would like to add?"
             },
             { /////////////////////// last name
                 name: "addDirLast",
@@ -321,26 +321,54 @@ function addDir() {
 // only employees can be modified 
 //////////////////////////////////////////////////////
 function updateData() {
+    // inquirer 
+    inquirer.prompt([
+        /////////////////////// get employee ID to identify
+        {
+            name: "updateEmpId",
+            type: "input",
+            message: "UPDATE AN EMPLOYEE: What is the employee ID of the employee you would like to update?"
+        },
+        { /////////////////////// get user input for updated role 
+            name: "updateEmpRole",
+            type: "list",
+            message: "What is the new role id of the employee you are updating? /// 1 - CEO // 2 - VP of Dev // 3 - VP of Marketing // 4 - Engineer // 5 - Junior Engineer // 6 - Implementation Manager // 7 - Marketing Analyst // 8 - Project Manager ///?",
+            choices: ["1", "2", "3", "4", "5", "6", "7", "8"]
 
+        }
+        /////////////////////// .then async function (urAnswer)
+    ]).then(async function (urAnswer) {
+        ///////////////////////  query UPDATE employee SET ? WHERE ?
+        connection.query("UPDATE employee SET ? WHERE ?",
+            [{
+                    role_id: urAnswer.updateEmpRole
+                },
+                {
+                    id: urAnswer.updatEmpId
+                }
+            ],
+            function (err) {
+                if (err) throw (err);
+            });
+        await start();
+    });
 }
+
+/////////////////////////////////////////////////////
 // we can only update employees
 // specififcally their role and manager id
 // how to indentify employees? 
 // could do name, but would have to be an exact match
 // could do employee id. Would hey know it? probably not
 // i think employee id is best
-
-// prompt for update role or manager
-
-
-
-// role_id: urAnswer.updatedRole_
-// id: urAnswer
-
-// if manager, 
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+// Would like to add extra update functionality in the future
+// if update emp managerID, 
 // prompt for new role name (updatedManager_)
 // prompt for emp id (name empId_)
 // .then async function (umAnswer)
 // query UPDATE employee SET ? WHERE > 
 // manager_id: umAnswer.updatedManager_
 // id: urAnswer
+//////////////////////////////////////////////////////
