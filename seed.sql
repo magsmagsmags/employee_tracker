@@ -1,54 +1,50 @@
-DROP DATABASE IF EXISTS staff_db;
 
+DROP DATABASE IF EXISTS staff_db;
 CREATE DATABASE staff_db;
 
 USE staff_db;
 
--- employee table
-CREATE TABLE employee
+CREATE TABLE department
 (
     id INT NOT NULL
-    AUTO_INCREMENT primary key,
-  first_name VARCHAR
-    (30) NULL,
-    last_name VARCHAR
-    (30) NULL,
-   role_id INT,
-   -- references the employee id of a manager,the employee's manager
-    manager_id INT, 
+    AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR
+    (30) NOT NULL
 );
 
-    -- role table
     CREATE TABLE role
     (
         id INT NOT NULL
-        AUTO_INCREMENT primary key,
-  title VARCHAR
+        AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR
         (30) NOT NULL,
     salary DECIMAL
-        (10,2),
-    -- Connected to department ID in department table. --
-   department_id INT,
-    foreign key
-        (department_id)
-            references department
-        (id)
-            on
-        delete CASCADE
-            on
-        update no action;
-        );
-
-        -- department table
-        CREATE TABLE department
-        (
-            id INT NOT NULL
-            AUTO_INCREMENT primary key,
-  deptName VARCHAR
-            (30) NOT NULL,
+        (10, 2) NOT NULL,
+    department_id INT NOT NULL,
+    FOREIGN KEY
+        (department_id) REFERENCES department
+        (id) ON
+        DELETE CASCADE ON
+        UPDATE NO ACTION
 );
 
-
+        CREATE TABLE employee
+        (
+            id INT NOT NULL
+            AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR
+            (30) NOT NULL,
+    last_name VARCHAR
+            (30) NOT NULL,
+    role_id INT NOT NULL,
+    manager_id INT NULL,
+    FOREIGN KEY
+            (manager_id) REFERENCES employee
+            (id),
+    FOREIGN KEY
+            (role_id) REFERENCES role
+            (id)
+);
 
             INSERT INTO department
                 (name)
@@ -71,7 +67,8 @@ CREATE TABLE employee
                 ("Engineer", 80000, 2),
                 ("Junior Engineer", 50000, 2),
                 ("Implementation Manager", 150000, 4),
-                ("Marketing Analyst", 70000, 5, ("Customer Success Associate", 60000, 3);
+                ("Marketing Analyst", 70000, 5),
+                ("Project Manager", 180000, 3);
 
             SELECT *
             FROM role;
@@ -79,16 +76,18 @@ CREATE TABLE employee
             INSERT INTO employee
                 (first_name, last_name, role_id, manager_id)
             VALUES
-                ("Laura", "Baker", 1, NULL),
-                ("Jason", "Miller", 2, 1),
-                ("Amanda", "Smith", 2, 1),
-                ("Mark", "Johnson", 3, NULL),
-                ("Rebecca", "Anderson", 4, 4),
-                ("Nick", "Jackson", 5, NULL),
-                ("Molly", "Rose", 6, 6),
-                ("Cindy", "Martinez", 7, NULL),
-                ("Andrew", "Carson", 8, 8),
-                ("Melissa", "Velez", 8, 8);
+                ("Lucy", "Martin", 1, NULL),
+                ("Nancy", "King", 2, NULL),
+                ("Sean", "Samuels", 3, NULL),
+                ("Parker", "Bowles", 6, NULL),
+                ("Sawyer", "Andrews", 4, 2),
+                ("Joe", "Jonas", 4, 2),
+                ("Bianca", "Carter", 4, 2),
+                ("Crystal", "Del Rio", 5, 2),
+                ("Emily", "Shea", 7, 3),
+                ("Elizabeth", "Sulentc", 7, 3),
+                ("Trinity", "Sanchez", 8, 6),
+                ("Courtney", "Act", 8, 6);
 
             SELECT *
             FROM employee;
