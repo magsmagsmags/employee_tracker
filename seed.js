@@ -1,4 +1,4 @@
-const mysql = require("sql");
+const mysql = require("mysql");
 const inquirer = require("inquirer");
 const consoleTable = require('console.table');
 require("dotenv").config();
@@ -7,11 +7,11 @@ require("dotenv").config();
 const connection = mysql.createConnection({
     host: "localhost",
 
-    port: 3308,
+    port: 3306,
 
     user: "root",
 
-    password: process.env.DB_PASSWORD,
+    password: "Magsmags5!4",
     database: "staff_db"
 });
 
@@ -65,8 +65,6 @@ function viewRootMenu() {
         }
     })
 }
-
-start();
 
 function viewAllData() {
     connection.query("SELECT ", function (err, res) {
@@ -147,23 +145,82 @@ function addDept() {
 
 function addRole() {
     // inquirer
-    //role 
-    // salary
-    // affilited dept id
-    //.then async
-    // query INSERT INTO role SET ?
-    // await start
+    inquirer
+        .prompt([{
+                name: "addRoleTitle",
+                type: "input",
+                message: "What is the title of the role you would like to add?"
+            },
+            {
+                name: "addRoleSalary",
+                type: "input",
+                message: "What is the salary of the new role you added??"
+            },
+            {
+                name: "addRoleDeptId",
+                type: "list",
+                message: "What is the department id of the new role you added? // 1 - Operations / 2 - Engineering / 3 - Customer Support / 4 - Implementation / 5 - Sales",
+                choices: ["1", "2", "3", "4", "5"]
+            }
+        ]).then(async function (arAnswer) {
+            connection.query("INSERT INTO role SET ?", {
+                    /////////////////////
+                    title: arAnswer.addRoleTitle,
+                    salary: arAnswer.addRoleSalary,
+                    department_id: arAnswer.addRoleDeptId
+                },
+
+                function (err) {
+                    if (err) throw (err);
+                });
+            await start();
+        });
+
 }
+
 
 function addDir() {
     //inquirer
-    // first name
-    // last name 
-    // role_id
-    // manager_id
-    //.then async
-    // query INSERT INTO employee SET ?
-    // await start
+    inquirer
+        .prompt([{
+                // first name
+                name: "addDirFirst",
+                type: "input",
+                message: "You've selected to add a new employee. What is the FIRST name of the employee you would like to add?"
+            },
+            { // last name 
+                name: "addDirLast",
+                type: "input",
+                message: "What is the LAST name of the employee you would like to add?"
+            },
+            { // role_id
+                name: "addDirRoleId",
+                type: "list",
+                message: "What is the role id of the new role you added? /// 1 - CEO // 2 - VP of Dev // 3 - VP of Marketing // 4 - Engineer // 5 - Junior Engineer // 6 - Implementation Manager // 7 - Marketing Analyst // 8 - Project Manager ///",
+                choices: ["1", "2", "3", "4", "5", "6", "7", "8"]
+            },
+            { // manager_id
+                name: "addDirManagerId",
+                type: "list",
+                message: "What is the manager id of the new role you added? /// 1 - CEO Lucy Martin // 2 - VP of Dev Nancy King // 3 - VP of Marketing Sean Samuels // 4 - Implementation Manager Parker Bowles ///",
+                choices: ["1", "2", "3", "4"]
+            }
+            //.then async
+        ]).then(async function (adAnswer) {
+            // query INSERT INTO employee SET ?
+            connection.query("INSERT INTO employee SET ?", {
+                    /////////////////////
+                    first_name: adAnswer.addDirFirst,
+                    last_name: adAnswer.addDirLast,
+                    role_id: adAnswer.addDirRoleId,
+                    manager_id: adAnswer.addDirManagerId
+                },
+
+                function (err) {
+                    if (err) throw (err);
+                }); // await start
+            await start();
+        });
 
 }
 
@@ -177,6 +234,7 @@ function updateData() {
     // i think employee id is best
 
     // prompt for update role or manager
+
     // if role, 
     // prompt for new role name (updatedRole_)
     // prompt for emp id (name empId_)
@@ -184,6 +242,7 @@ function updateData() {
     // query UPDATE employee SET ? WHERE > 
     // role_id: urAnswer.updatedRole_
     // id: urAnswer
+
     // if manager, 
     // prompt for new role name (updatedManager_)
     // prompt for emp id (name empId_)
