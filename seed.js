@@ -6,7 +6,7 @@ require("dotenv").config();
 const connection = mysql.createConnection({
     host: "localhost",
 
-    port: 3306,
+    port: 3308,
 
     user: "root",
 
@@ -58,7 +58,7 @@ function viewRootMenu() {
         } else if (vrAnswer.viewRoot === "View Employee Roles") {
             viewRoles();
         } else if (vrAnswer.viewRoot === "View Employee Directory") {
-            viewRoles();
+            viewDir();
         } else {
             start();
         }
@@ -67,17 +67,35 @@ function viewRootMenu() {
 
 start();
 
-// function viewAllData(){
+function viewAllData() {
+    connection.query("SELECT ", function (err, res) {
+        if (err) throw (err);
+        console.log("\n");
+        console.table(res);
+        console.log("\n");
+    });
+    start();
+}
 
-// }
+function viewDepts() {
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw (err);
+        console.log("\n");
+        console.table(res);
+        console.log("\n");
+    });
+    start();
+}
 
-// function viewDepts(){
-
-// }
-
-// function viewRoles(){
-
-// }
+function viewRoles() {
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw (err);
+        console.log("\n");
+        console.table(res);
+        console.log("\n");
+    });
+    start();
+}
 
 
 // // function queryAllItems() {
