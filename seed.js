@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 
     user: "root",
 
-    password: "Magsmags5!4",
+    password: process.env.DB_PASSWORD,
     database: "staff_db"
 });
 
@@ -33,7 +33,7 @@ function start() {
         })
         .then(function (answer) {
             // based on their answer, either call the bid // update // or post functions
-            if (answer.viewOrAdd === "View") {
+            if (answer.startQ === "View") {
                 viewRootMenu();
             } else if (answer.startQ === "Update") {
                 updateData();
@@ -53,12 +53,16 @@ function viewRootMenu() {
         choices: ["View All Data Types", "View Departments", "View Employee Roles", "View Employee Directory", "Back to Main Menu"]
     }).then(function (vrAnswer) {
         if (vrAnswer.viewRoot === "View All Data Types") {
+            console.log("viewRoot answer = View All Data");
             viewAllData();
         } else if (vrAnswer.viewRoot === "View Departments") {
+            console.log("viewRoot answer = View Departments");
             viewDepts();
         } else if (vrAnswer.viewRoot === "View Employee Roles") {
+            console.log("viewRoot answer = View Roles");
             viewRoles();
         } else if (vrAnswer.viewRoot === "View Employee Directory") {
+            console.log("viewRoot answer = View Employees");
             viewDir();
         } else {
             start();
@@ -67,7 +71,19 @@ function viewRootMenu() {
 }
 
 function viewAllData() {
-    connection.query("SELECT ", function (err, res) {
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw (err);
+        console.log("\n");
+        console.table(res);
+        console.log("\n");
+    });
+    connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw (err);
+        console.log("\n");
+        console.table(res);
+        console.log("\n");
+    });
+    connection.query("SELECT * FROM employee", function (err, res) {
         if (err) throw (err);
         console.log("\n");
         console.table(res);
@@ -113,7 +129,7 @@ function addData() {
             type: "list",
             message: "Would you like to add a department, role, or new employee?",
             choices: ["Add a Department", "Add a Role", "Add an Employee", "Back to Main Menu"]
-        }).then(function (aAnswer) {
+        }).then(function (arAnswer) {
             if (arAnswer.addRoot === "Add a Department") {
                 addDept();
             } else if (arAnswer.addRoot === "Add a Role") {
