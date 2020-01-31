@@ -127,6 +127,23 @@ function addData() {
         });
 }
 
+function addDept() {
+    inquirer
+        .prompt({
+            name: "addDept",
+            type: "input",
+            message: "What is the name of the department you would like to add?"
+        }).then(async function (adAnswer) {
+            connection.query("INSERT INTO department SET ?", {
+                    name: adAnswer.addDept
+                },
+                function (err) {
+                    if (err) throw (err);
+                });
+            await start();
+        });
+}
+
 
 // // function queryAllItems() {
 // //     console.log("...Selecting all items in table to READ...");
