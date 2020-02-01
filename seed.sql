@@ -45,7 +45,6 @@ CREATE TABLE department
             (role_id) REFERENCES role
             (id)
 );
-
             INSERT INTO department
                 (name)
             VALUES
@@ -92,8 +91,3 @@ CREATE TABLE department
             SELECT *
             FROM employee;
 
-            SELECT a.id, a.first_name, a.last_name, role.title, role.salary, department.name, CONCAT(b.first_name ," " ,b.last_name) AS Manager
-            FROM department
-                RIGHT JOIN role ON role.department_id = department.id
-                RIGHT JOIN employee a ON a.role_id = role.id
-                LEFT JOIN employee b ON b.id = a.manager_id;
