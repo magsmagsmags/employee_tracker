@@ -81,16 +81,16 @@ function viewRootMenu() {
         // Route user to appropriate view SELECT function
         //////////////////////////////////////////////////////
         if (vrAnswer.viewRoot === "View All Data Types") {
-            console.log("viewRoot answer = View All Data");
+            console.log("viewRoot selection = View All Data");
             viewAllData();
         } else if (vrAnswer.viewRoot === "View Departments") {
-            console.log("viewRoot answer = View Departments");
+            console.log("viewRoot selection = View Departments");
             viewDepts();
         } else if (vrAnswer.viewRoot === "View Employee Roles") {
-            console.log("viewRoot answer = View Roles");
+            console.log("viewRoot selection = View Roles");
             viewRoles();
         } else if (vrAnswer.viewRoot === "View Employee Directory") {
-            console.log("viewRoot answer = View Employees");
+            console.log("viewRoot selection = View Employees");
             viewDir();
         } else {
             start();
