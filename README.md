@@ -4,6 +4,10 @@ Developers are often tasked with creating interfaces that make it easy for non-d
 
 ![Screenshot](Assets/employee-tracker.gif)
 
+## GitHub Repository
+
+https://github.com/magsmagsmags/employee_tracker
+
 ## User Story
 
 We can frame this challenge as follows:
@@ -14,63 +18,17 @@ I want to be able to view and manage the departments, roles, and employees in my
 So that I can organize and plan my business
 ```
 
-## Database Schema
+## Functionality
 
-![Database Schema](Assets/schema.png)
+A command-line application that allows the user to:
 
-* **department**:
+* Add departments, roles, employees
 
-  * **id** - INT PRIMARY KEY
-  * **name** - VARCHAR(30) to hold department name
+* View departments, roles, employees
 
-* **role**:
+* Update employee roles
 
-  * **id** - INT PRIMARY KEY
-  * **title** -  VARCHAR(30) to hold role title
-  * **salary** -  DECIMAL to hold role salary
-  * **department_id** -  INT to hold reference to department role belongs to
-
-* **employee**:
-
-  * **id** - INT PRIMARY KEY
-  * **first_name** - VARCHAR(30) to hold employee first name
-  * **last_name** - VARCHAR(30) to hold employee last name
-  * **role_id** - INT to hold reference to role employee has
-  * **manager_id** - INT to hold reference to another employee that manager of the current employee. This field may be null if the employee has no manager
-  
-Build a command-line application that at a minimum allows the user to:
-
-  * Add departments, roles, employees
-
-  * View departments, roles, employees
-
-  * Update employee roles
-
-Bonus points if you're able to:
-
-  * Update employee managers
-
-  * View employees by manager
-
-  * Delete departments, roles, and employees
-
-  * View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-
-
-
-## Minimum Requirements
-
-Build a command-line application that at a minimum allows the user to:
-
-  * Add departments, roles, employees
-
-  * View departments, roles, employees
-
-  * Update employee roles
 
 
 ## Credits
 * Anthony Garza
-* Brittany Taylor
-* Israel Medina
-* Eric Scott
