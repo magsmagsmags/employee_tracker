@@ -28,6 +28,9 @@ A command-line application that allows the user to:
 
 * Update employee roles
 
+## Screen View of Application
+![Screenshot](/Assets/tracker_video.mp4)
+
 
 
 ## Credits
