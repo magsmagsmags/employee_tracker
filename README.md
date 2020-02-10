@@ -2,7 +2,8 @@
 
 Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. Often these interfaces are known as **C**ontent **M**anagement **S**ystems. This application is a solution for managing a company's employees using node, inquirer, and MySQL.
 
-![Screenshot](Assets/employee-tracker.gif)
+![Screenshot](/Assets/tracker_video.mp4)
+
 
 ## GitHub Repository
 
@@ -27,9 +28,6 @@ A command-line application that allows the user to:
 * View departments, roles, employees
 
 * Update employee roles
-
-## Screen View of Application
-![Screenshot](/Assets/tracker_video.mp4)
 
 
 
