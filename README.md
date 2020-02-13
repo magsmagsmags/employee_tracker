@@ -21,6 +21,8 @@ So that I can organize and plan my business
 
 ## Functionality
 
+![Screenshot](/assets/tracker_gif.gif)
+
 A command-line application that allows the user to:
 
 * Add departments, roles, employees
