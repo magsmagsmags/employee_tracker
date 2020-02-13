@@ -2,7 +2,7 @@
 
 Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. Often these interfaces are known as **C**ontent **M**anagement **S**ystems. This application is a solution for managing a company's employees using node, inquirer, and MySQL.
 
-![Screenshot](/Assets/tracker_video.mp4)
+![Screenshot](/Assets/employee-tracker.gif)
 
 
 ## GitHub Repository
@@ -21,7 +21,7 @@ So that I can organize and plan my business
 
 ## Functionality
 
-![Screenshot](/assets/tracker_gif.gif)
+![Screenshot](/assets/tracker.gif)
 
 A command-line application that allows the user to:
 
